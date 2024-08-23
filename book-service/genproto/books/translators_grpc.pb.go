@@ -31,7 +31,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TranslatorsServiceClient interface {
 	Create(ctx context.Context, in *TranslatorsRes, opts ...grpc.CallOption) (*Void, error)
-	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*TranslatorsGetByIdRes, error)
+	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*TranslatorsRes, error)
 	GetAll(ctx context.Context, in *TranslatorsGetAllReq, opts ...grpc.CallOption) (*TranslatorsGetAllRes, error)
 	Update(ctx context.Context, in *TranslatorsUpdateReq, opts ...grpc.CallOption) (*Void, error)
 	Delete(ctx context.Context, in *ById, opts ...grpc.CallOption) (*Void, error)
@@ -54,8 +54,8 @@ func (c *translatorsServiceClient) Create(ctx context.Context, in *TranslatorsRe
 	return out, nil
 }
 
-func (c *translatorsServiceClient) GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*TranslatorsGetByIdRes, error) {
-	out := new(TranslatorsGetByIdRes)
+func (c *translatorsServiceClient) GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*TranslatorsRes, error) {
+	out := new(TranslatorsRes)
 	err := c.cc.Invoke(ctx, TranslatorsService_GetById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -95,7 +95,7 @@ func (c *translatorsServiceClient) Delete(ctx context.Context, in *ById, opts ..
 // for forward compatibility
 type TranslatorsServiceServer interface {
 	Create(context.Context, *TranslatorsRes) (*Void, error)
-	GetById(context.Context, *ById) (*TranslatorsGetByIdRes, error)
+	GetById(context.Context, *ById) (*TranslatorsRes, error)
 	GetAll(context.Context, *TranslatorsGetAllReq) (*TranslatorsGetAllRes, error)
 	Update(context.Context, *TranslatorsUpdateReq) (*Void, error)
 	Delete(context.Context, *ById) (*Void, error)
@@ -109,7 +109,7 @@ type UnimplementedTranslatorsServiceServer struct {
 func (UnimplementedTranslatorsServiceServer) Create(context.Context, *TranslatorsRes) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedTranslatorsServiceServer) GetById(context.Context, *ById) (*TranslatorsGetByIdRes, error) {
+func (UnimplementedTranslatorsServiceServer) GetById(context.Context, *ById) (*TranslatorsRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
 }
 func (UnimplementedTranslatorsServiceServer) GetAll(context.Context, *TranslatorsGetAllReq) (*TranslatorsGetAllRes, error) {

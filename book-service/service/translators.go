@@ -18,7 +18,7 @@ func NewTranslatorsService(storage *st.Storage) *TranslatorsService {
 func (s *TranslatorsService) Create(ctx context.Context, req *bp.TranslatorsRes) (*bp.Void, error){
 	return s.storage.TranslatorsS.Create(req)
 }
-func (s *TranslatorsService) GetById(ctx context.Context, req *bp.ById) (*bp.TranslatorsGetByIdRes, error){
+func (s *TranslatorsService) GetById(ctx context.Context, req *bp.ById) (*bp.TranslatorsRes, error){
 	return s.storage.TranslatorsS.GetById(req)
 }
 func (s *TranslatorsService) GetAll(ctx context.Context, req *bp.TranslatorsGetAllReq) (*bp.TranslatorsGetAllRes, error){

@@ -25,14 +25,20 @@ BEGIN
             'full_time', 
             'part_time'
         );
-    END IF;          
+    END IF;  
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'vacancy_status') THEN
+        CREATE TYPE vacancy_status AS ENUM(
+            'active', 
+            'non-active'
+        );
+    END IF;         
 END $$;
 
 CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     phone_number VARCHAR(13),
     date_of_birth DATE,
@@ -85,7 +91,8 @@ CREATE TABLE IF NOT EXISTS languages (
     name VARCHAR(255) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deleted_at BIGINT);
+    deleted_at BIGINT DEFAULT 0
+);
 
 CREATE TABLE IF NOT EXISTS books (
     id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
@@ -114,9 +121,9 @@ CREATE TABLE IF NOT EXISTS vacancies (
     publisher_id UUID REFERENCES publishers(id) NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT,
-    status VARCHAR(50) NOT NULL,
-    salary_from NUMERIC,
-    salary_to NUMERIC,
+    status vacancy_status NOT NULL DEFAULT 'active',
+    salary_from NUMERIC CHECK (salary_from >= 0),
+    salary_to NUMERIC CHECK (salary_to >= 0),
     working_styles working_styles_enum,
     working_types working_types_enum,
     phone_number VARCHAR(13) NOT NULL,
@@ -125,4 +132,11 @@ CREATE TABLE IF NOT EXISTS vacancies (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at BIGINT DEFAULT 0,
+    CONSTRAINT check_salary_range CHECK (salary_to >= salary_from)
 );
+
+ALTER TABLE users
+ADD CONSTRAINT users_unique_tg UNIQUE (email, phone_number, deleted_at);
+
+ALTER TABLE publishers
+ADD CONSTRAINT publishers_unique_tg UNIQUE (email, phone_number, deleted_at);

@@ -44,12 +44,18 @@ func Run(cfg config.Config) {
 	authors_service := service.NewAuthorsService(db)
 	publishers_service := service.NewPublishersService(db)
 	translators_service := service.NewTranslatorsService(db)
+	categories_service := service.NewCategoriesService(db)
+	languages_service := service.NewLanguagesService(db)
+	vacancies_service := service.NewVacanciesService(db)
 
 	kafka_handler := &KafkaHandler{
 		books:       books_service,
 		authors:     authors_service,
 		publishers:  publishers_service,
 		translators: translators_service,
+		categories:  categories_service,
+		languages:   languages_service,
+		vacancies:   vacancies_service,
 	}
 
 	if err := Register(kafka_handler, &cfg); err != nil {
@@ -60,10 +66,13 @@ func Run(cfg config.Config) {
 
 	s := grpc.NewServer()
 
-	bp.RegisterAuthorsServiceServer(s, service.NewAuthorsService(db))
-	bp.RegisterBooksServiceServer(s, service.NewBooksService(db))
-	bp.RegisterPublishersServiceServer(s, service.NewPublishersService(db))
-	bp.RegisterTranslatorsServiceServer(s, service.NewTranslatorsService(db))
+	bp.RegisterAuthorsServiceServer(s, authors_service)
+	bp.RegisterBooksServiceServer(s, books_service)
+	bp.RegisterPublishersServiceServer(s, publishers_service)
+	bp.RegisterTranslatorsServiceServer(s, translators_service)
+	bp.RegisterCategoriesServiceServer(s, categories_service)
+	bp.RegisterLanguagesServiceServer(s, languages_service)
+	bp.RegisterVacanciesServiceServer(s, vacancies_service)
 
 	log.Printf("server listening at %v", listener.Addr())
 	if err := s.Serve(listener); err != nil {

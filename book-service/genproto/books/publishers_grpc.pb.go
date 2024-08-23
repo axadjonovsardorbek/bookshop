@@ -31,7 +31,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PublishersServiceClient interface {
 	Create(ctx context.Context, in *PublishersRes, opts ...grpc.CallOption) (*Void, error)
-	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*PublishersGetByIdRes, error)
+	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*PublishersRes, error)
 	GetAll(ctx context.Context, in *PublishersGetAllReq, opts ...grpc.CallOption) (*PublishersGetAllRes, error)
 	Update(ctx context.Context, in *PublishersUpdateReq, opts ...grpc.CallOption) (*Void, error)
 	Delete(ctx context.Context, in *ById, opts ...grpc.CallOption) (*Void, error)
@@ -54,8 +54,8 @@ func (c *publishersServiceClient) Create(ctx context.Context, in *PublishersRes,
 	return out, nil
 }
 
-func (c *publishersServiceClient) GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*PublishersGetByIdRes, error) {
-	out := new(PublishersGetByIdRes)
+func (c *publishersServiceClient) GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*PublishersRes, error) {
+	out := new(PublishersRes)
 	err := c.cc.Invoke(ctx, PublishersService_GetById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -95,7 +95,7 @@ func (c *publishersServiceClient) Delete(ctx context.Context, in *ById, opts ...
 // for forward compatibility
 type PublishersServiceServer interface {
 	Create(context.Context, *PublishersRes) (*Void, error)
-	GetById(context.Context, *ById) (*PublishersGetByIdRes, error)
+	GetById(context.Context, *ById) (*PublishersRes, error)
 	GetAll(context.Context, *PublishersGetAllReq) (*PublishersGetAllRes, error)
 	Update(context.Context, *PublishersUpdateReq) (*Void, error)
 	Delete(context.Context, *ById) (*Void, error)
@@ -109,7 +109,7 @@ type UnimplementedPublishersServiceServer struct {
 func (UnimplementedPublishersServiceServer) Create(context.Context, *PublishersRes) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedPublishersServiceServer) GetById(context.Context, *ById) (*PublishersGetByIdRes, error) {
+func (UnimplementedPublishersServiceServer) GetById(context.Context, *ById) (*PublishersRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
 }
 func (UnimplementedPublishersServiceServer) GetAll(context.Context, *PublishersGetAllReq) (*PublishersGetAllRes, error) {

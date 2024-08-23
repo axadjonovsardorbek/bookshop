@@ -18,7 +18,7 @@ func NewAuthorsService(storage *st.Storage) *AuthorsService {
 func (s *AuthorsService) Create(ctx context.Context, req *bp.AuthorsRes) (*bp.Void, error){
 	return s.storage.AuthorsS.Create(req)
 }
-func (s *AuthorsService) GetById(ctx context.Context, req *bp.ById) (*bp.AuthorsGetByIdRes, error){
+func (s *AuthorsService) GetById(ctx context.Context, req *bp.ById) (*bp.AuthorsRes, error){
 	return s.storage.AuthorsS.GetById(req)
 }
 func (s *AuthorsService) GetAll(ctx context.Context, req *bp.AuthorsGetAllReq) (*bp.AuthorsGetAllRes, error){

@@ -14,6 +14,9 @@ type Storage struct {
 	Db           *sql.DB
 	AuthorsS     storage.AuthorsI
 	BooksS       storage.BooksI
+	CategoriesS  storage.CategoriesI
+	LanguagesS   storage.LanguagesI
+	VacanciesS   storage.VacanciesI
 	PublishersS  storage.PublishersI
 	TranslatorsS storage.TranslatorsI
 }
@@ -41,6 +44,9 @@ func NewPostgresStorage(config config.Config) (*Storage, error) {
 	book := NewBooksRepo(db)
 	publisher := NewPublishersRepo(db)
 	translator := NewTranslatorsRepo(db)
+	category := NewCategoriesRepo(db)
+	language := NewLanguagesRepo(db)
+	vacancy := NewVacanciesRepo(db)
 
 	return &Storage{
 		Db:           db,
@@ -48,5 +54,8 @@ func NewPostgresStorage(config config.Config) (*Storage, error) {
 		BooksS:       book,
 		PublishersS:  publisher,
 		TranslatorsS: translator,
+		CategoriesS:  category,
+		LanguagesS:   language,
+		VacanciesS:   vacancy,
 	}, nil
 }

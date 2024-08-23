@@ -31,7 +31,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthorsServiceClient interface {
 	Create(ctx context.Context, in *AuthorsRes, opts ...grpc.CallOption) (*Void, error)
-	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*AuthorsGetByIdRes, error)
+	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*AuthorsRes, error)
 	GetAll(ctx context.Context, in *AuthorsGetAllReq, opts ...grpc.CallOption) (*AuthorsGetAllRes, error)
 	Update(ctx context.Context, in *AuthorsUpdateReq, opts ...grpc.CallOption) (*Void, error)
 	Delete(ctx context.Context, in *ById, opts ...grpc.CallOption) (*Void, error)
@@ -54,8 +54,8 @@ func (c *authorsServiceClient) Create(ctx context.Context, in *AuthorsRes, opts 
 	return out, nil
 }
 
-func (c *authorsServiceClient) GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*AuthorsGetByIdRes, error) {
-	out := new(AuthorsGetByIdRes)
+func (c *authorsServiceClient) GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*AuthorsRes, error) {
+	out := new(AuthorsRes)
 	err := c.cc.Invoke(ctx, AuthorsService_GetById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -95,7 +95,7 @@ func (c *authorsServiceClient) Delete(ctx context.Context, in *ById, opts ...grp
 // for forward compatibility
 type AuthorsServiceServer interface {
 	Create(context.Context, *AuthorsRes) (*Void, error)
-	GetById(context.Context, *ById) (*AuthorsGetByIdRes, error)
+	GetById(context.Context, *ById) (*AuthorsRes, error)
 	GetAll(context.Context, *AuthorsGetAllReq) (*AuthorsGetAllRes, error)
 	Update(context.Context, *AuthorsUpdateReq) (*Void, error)
 	Delete(context.Context, *ById) (*Void, error)
@@ -109,7 +109,7 @@ type UnimplementedAuthorsServiceServer struct {
 func (UnimplementedAuthorsServiceServer) Create(context.Context, *AuthorsRes) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedAuthorsServiceServer) GetById(context.Context, *ById) (*AuthorsGetByIdRes, error) {
+func (UnimplementedAuthorsServiceServer) GetById(context.Context, *ById) (*AuthorsRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
 }
 func (UnimplementedAuthorsServiceServer) GetAll(context.Context, *AuthorsGetAllReq) (*AuthorsGetAllRes, error) {

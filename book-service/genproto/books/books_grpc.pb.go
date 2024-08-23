@@ -30,8 +30,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BooksServiceClient interface {
-	Create(ctx context.Context, in *BooksRes, opts ...grpc.CallOption) (*Void, error)
-	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*BooksGetByIdRes, error)
+	Create(ctx context.Context, in *BooksCreateReq, opts ...grpc.CallOption) (*Void, error)
+	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*BooksRes, error)
 	GetAll(ctx context.Context, in *BooksGetAllReq, opts ...grpc.CallOption) (*BooksGetAllRes, error)
 	Update(ctx context.Context, in *BooksUpdateReq, opts ...grpc.CallOption) (*Void, error)
 	Delete(ctx context.Context, in *ById, opts ...grpc.CallOption) (*Void, error)
@@ -45,7 +45,7 @@ func NewBooksServiceClient(cc grpc.ClientConnInterface) BooksServiceClient {
 	return &booksServiceClient{cc}
 }
 
-func (c *booksServiceClient) Create(ctx context.Context, in *BooksRes, opts ...grpc.CallOption) (*Void, error) {
+func (c *booksServiceClient) Create(ctx context.Context, in *BooksCreateReq, opts ...grpc.CallOption) (*Void, error) {
 	out := new(Void)
 	err := c.cc.Invoke(ctx, BooksService_Create_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -54,8 +54,8 @@ func (c *booksServiceClient) Create(ctx context.Context, in *BooksRes, opts ...g
 	return out, nil
 }
 
-func (c *booksServiceClient) GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*BooksGetByIdRes, error) {
-	out := new(BooksGetByIdRes)
+func (c *booksServiceClient) GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*BooksRes, error) {
+	out := new(BooksRes)
 	err := c.cc.Invoke(ctx, BooksService_GetById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -94,8 +94,8 @@ func (c *booksServiceClient) Delete(ctx context.Context, in *ById, opts ...grpc.
 // All implementations must embed UnimplementedBooksServiceServer
 // for forward compatibility
 type BooksServiceServer interface {
-	Create(context.Context, *BooksRes) (*Void, error)
-	GetById(context.Context, *ById) (*BooksGetByIdRes, error)
+	Create(context.Context, *BooksCreateReq) (*Void, error)
+	GetById(context.Context, *ById) (*BooksRes, error)
 	GetAll(context.Context, *BooksGetAllReq) (*BooksGetAllRes, error)
 	Update(context.Context, *BooksUpdateReq) (*Void, error)
 	Delete(context.Context, *ById) (*Void, error)
@@ -106,10 +106,10 @@ type BooksServiceServer interface {
 type UnimplementedBooksServiceServer struct {
 }
 
-func (UnimplementedBooksServiceServer) Create(context.Context, *BooksRes) (*Void, error) {
+func (UnimplementedBooksServiceServer) Create(context.Context, *BooksCreateReq) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedBooksServiceServer) GetById(context.Context, *ById) (*BooksGetByIdRes, error) {
+func (UnimplementedBooksServiceServer) GetById(context.Context, *ById) (*BooksRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
 }
 func (UnimplementedBooksServiceServer) GetAll(context.Context, *BooksGetAllReq) (*BooksGetAllRes, error) {
@@ -135,7 +135,7 @@ func RegisterBooksServiceServer(s grpc.ServiceRegistrar, srv BooksServiceServer)
 }
 
 func _BooksService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BooksRes)
+	in := new(BooksCreateReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func _BooksService_Create_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: BooksService_Create_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BooksServiceServer).Create(ctx, req.(*BooksRes))
+		return srv.(BooksServiceServer).Create(ctx, req.(*BooksCreateReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

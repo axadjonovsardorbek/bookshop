@@ -15,11 +15,14 @@ type KafkaHandler struct {
 	authors     *service.AuthorsService
 	publishers  *service.PublishersService
 	translators *service.TranslatorsService
+	categories  *service.CategoriesService
+	languages   *service.LanguagesService
+	vacancies   *service.VacanciesService
 }
 
 func (h *KafkaHandler) BooksCreateHandler() func(message []byte) {
 	return func(message []byte) {
-		var req pb.BooksRes
+		var req pb.BooksCreateReq
 		if err := protojson.Unmarshal(message, &req); err != nil {
 			log.Printf("Cannot unmarshal JSON: %v", err)
 			return
@@ -138,6 +141,102 @@ func (h *KafkaHandler) TranslatorsUpdateHandler() func(message []byte) {
 		}
 
 		res, err := h.translators.Update(context.Background(), &req)
+		if err != nil {
+			log.Printf("Cannot update translators via Kafka: %v", err)
+			return
+		}
+		log.Printf("Updated translators: %+v", res)
+	}
+}
+func (h *KafkaHandler) CategoriesCreateHandler() func(message []byte) {
+	return func(message []byte) {
+		var req pb.CategoriesRes
+		if err := protojson.Unmarshal(message, &req); err != nil {
+			log.Printf("Cannot unmarshal JSON: %v", err)
+			return
+		}
+
+		res, err := h.categories.Create(context.Background(), &req)
+		if err != nil {
+			log.Printf("Cannot create translators via Kafka: %v", err)
+			return
+		}
+		log.Printf("Created translators: %+v", res)
+	}
+}
+func (h *KafkaHandler) CategoriesUpdateHandler() func(message []byte) {
+	return func(message []byte) {
+		var req pb.CategoriesUpdateReq
+		if err := protojson.Unmarshal(message, &req); err != nil {
+			log.Printf("Cannot unmarshal JSON: %v", err)
+			return
+		}
+
+		res, err := h.categories.Update(context.Background(), &req)
+		if err != nil {
+			log.Printf("Cannot update translators via Kafka: %v", err)
+			return
+		}
+		log.Printf("Updated translators: %+v", res)
+	}
+}
+func (h *KafkaHandler) VacanciesCreateHandler() func(message []byte) {
+	return func(message []byte) {
+		var req pb.VacanciesCreateReq
+		if err := protojson.Unmarshal(message, &req); err != nil {
+			log.Printf("Cannot unmarshal JSON: %v", err)
+			return
+		}
+
+		res, err := h.vacancies.Create(context.Background(), &req)
+		if err != nil {
+			log.Printf("Cannot create translators via Kafka: %v", err)
+			return
+		}
+		log.Printf("Created translators: %+v", res)
+	}
+}
+func (h *KafkaHandler) VacanciesUpdateHandler() func(message []byte) {
+	return func(message []byte) {
+		var req pb.VacanciesUpdateReq
+		if err := protojson.Unmarshal(message, &req); err != nil {
+			log.Printf("Cannot unmarshal JSON: %v", err)
+			return
+		}
+
+		res, err := h.vacancies.Update(context.Background(), &req)
+		if err != nil {
+			log.Printf("Cannot update translators via Kafka: %v", err)
+			return
+		}
+		log.Printf("Updated translators: %+v", res)
+	}
+}
+func (h *KafkaHandler) LanguagesCreateHandler() func(message []byte) {
+	return func(message []byte) {
+		var req pb.LanguagesRes
+		if err := protojson.Unmarshal(message, &req); err != nil {
+			log.Printf("Cannot unmarshal JSON: %v", err)
+			return
+		}
+
+		res, err := h.languages.Create(context.Background(), &req)
+		if err != nil {
+			log.Printf("Cannot create translators via Kafka: %v", err)
+			return
+		}
+		log.Printf("Created translators: %+v", res)
+	}
+}
+func (h *KafkaHandler) LanguagesUpdateHandler() func(message []byte) {
+	return func(message []byte) {
+		var req pb.LanguagesUpdateReq
+		if err := protojson.Unmarshal(message, &req); err != nil {
+			log.Printf("Cannot unmarshal JSON: %v", err)
+			return
+		}
+
+		res, err := h.languages.Update(context.Background(), &req)
 		if err != nil {
 			log.Printf("Cannot update translators via Kafka: %v", err)
 			return

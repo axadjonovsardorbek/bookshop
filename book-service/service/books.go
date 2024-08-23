@@ -15,10 +15,10 @@ func NewBooksService(storage *st.Storage) *BooksService {
 	return &BooksService{storage: *storage}
 }
 
-func (s *BooksService) Create(ctx context.Context, req *bp.BooksRes) (*bp.Void, error){
+func (s *BooksService) Create(ctx context.Context, req *bp.BooksCreateReq) (*bp.Void, error){
 	return s.storage.BooksS.Create(req)
 }
-func (s *BooksService) GetById(ctx context.Context, req *bp.ById) (*bp.BooksGetByIdRes, error){
+func (s *BooksService) GetById(ctx context.Context, req *bp.ById) (*bp.BooksRes, error){
 	return s.storage.BooksS.GetById(req)
 }
 func (s *BooksService) GetAll(ctx context.Context, req *bp.BooksGetAllReq) (*bp.BooksGetAllRes, error){
