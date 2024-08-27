@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "/auth";
+
+service AuthService {
+    rpc SignUp(Users) returns (SignUpResponse);
+    rpc LogIn(LogInRequest) returns (LogInResponse);
+    rpc ChangePassword(ChangePasswordRequest) returns (InfoResponse);
+    rpc ForgetPassword(ForgetPasswordRequest) returns (InfoResponse); 
+    rpc ResetPassword(ResetPasswordRequest) returns (InfoResponse); 
+    rpc ChangeEmail(ChangeEmailRequest) returns (InfoResponse);
+    rpc VerifyEmail(VerifyEmailRequest) returns (InfoResponse);
+    rpc EnterEmail(EmailRequest) returns (InfoResponse); 
+    rpc ValidateToken(ValidateTokenRequest) returns (InfoResponse);
+    rpc RefreshToken(RefreshTokenRequest) returns (InfoResponse);
+    rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+}
+
+message GetProfileRequest{
+    string user_id = 1;
+}
+
+message GetProfileResponse{
+    string first_name = 1;
+    string last_name = 2;
+    string email = 3;
+    string phone_number = 4;
+    string date_of_birth = 5;
+}
+
+message ValidateTokenRequest {
+    string token = 1;
+}
+
+message RefreshTokenRequest {
+    string refresh_token = 1;
+}
+
+message Users {
+    string user_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    string password = 6;
+    string phone_number = 5;
+    string role = 7;
+    string date_of_birth = 8;
+    string access_token = 9;
+    string refresh_token = 10;
+}
+
+message VerifyEmailRequest {
+    string email = 1;
+    string verification_code = 2; 
+}
+
+message ChangeEmailRequest {
+    string current_email = 1;
+    string password = 2;
+    string new_email = 3;
+}
+
+message EmailRequest {
+    string email = 1;
+}
+
+message LogInRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message LogInResponse {
+    string user_id = 1;
+    string access_token = 2;
+    string refresh_token = 3;
+}
+
+message SignUpRequest {
+    string first_name = 1;
+    string last_name = 2;
+    string password = 3;
+    string email = 4;
+    string phone_number = 5;
+    string date_of_birth = 6;
+}
+
+message SignUpResponse {
+    string user_id = 1;
+    string access_token = 2;
+    string refresh_token = 3;
+}
+
+message ChangePasswordRequest {
+    string user_id = 1;
+    string old_password = 2;
+    string new_password = 3;
+}
+
+message ForgetPasswordRequest {
+    string email = 1;
+}
+
+message ResetPasswordRequest {
+    string email = 1;
+    string verification_code = 2;
+    string new_password = 3;
+}
+
+message InfoResponse {
+    string message = 1;   
+    bool success = 2;
+}

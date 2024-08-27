@@ -1,0 +1,467 @@
+basePath: /
+definitions:
+  auth.EmailRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  auth.ForgetPasswordRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  auth.GetProfileResponse:
+    properties:
+      date_of_birth:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  auth.InfoResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  auth.LogInRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  auth.LogInResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+      user_id:
+        type: string
+    type: object
+  auth.RefreshTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+    type: object
+  auth.ResetPasswordRequest:
+    properties:
+      email:
+        type: string
+      new_password:
+        type: string
+      verification_code:
+        type: string
+    type: object
+  auth.SignUpRequest:
+    properties:
+      date_of_birth:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  auth.SignUpResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+      user_id:
+        type: string
+    type: object
+  auth.ValidateTokenRequest:
+    properties:
+      token:
+        type: string
+    type: object
+  auth.VerifyEmailRequest:
+    properties:
+      email:
+        type: string
+      verification_code:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Auth service
+  title: Auth service
+  version: "1.0"
+paths:
+  /auth/change-email:
+    post:
+      consumes:
+      - application/json
+      description: Change the email address of a user
+      parameters:
+      - description: Password
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: New Email
+        in: query
+        name: new_email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.InfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Change user email
+      tags:
+      - Auth
+  /auth/change-password:
+    post:
+      consumes:
+      - application/json
+      description: Change password for a user
+      parameters:
+      - description: Old Password
+        in: query
+        name: old_password
+        required: true
+        type: string
+      - description: New Password
+        in: query
+        name: new_password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.InfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Change user password
+      tags:
+      - Auth
+  /auth/enter-email:
+    post:
+      consumes:
+      - application/json
+      description: Enter an email address for various purposes (e.g., account recovery)
+      parameters:
+      - description: Enter email details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.EmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.InfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Enter user email
+      tags:
+      - Auth
+  /auth/forget-password:
+    post:
+      consumes:
+      - application/json
+      description: Request a password reset email
+      parameters:
+      - description: Request password reset
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.ForgetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.InfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Initiate password reset
+      tags:
+      - Auth
+  /auth/getProfile:
+    get:
+      consumes:
+      - application/json
+      description: Gets the all information about the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.GetProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get the profile informations
+      tags:
+      - Auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Log in a user with email and password
+      parameters:
+      - description: User login details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LogInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.LogInResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Log in a user
+      tags:
+      - Auth
+  /auth/refreshToken:
+    post:
+      consumes:
+      - application/json
+      description: Refresh a user's access token using the refresh token
+      parameters:
+      - description: Token refresh details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.InfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Refresh an access token
+      tags:
+      - Auth
+  /auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Reset a user's password using a temporary password
+      parameters:
+      - description: Reset password details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.InfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Reset user password
+      tags:
+      - Auth
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with email, password, and personal details
+      parameters:
+      - description: User registration details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.SignUpResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Register a new user
+      tags:
+      - Auth
+  /auth/validateToken:
+    post:
+      consumes:
+      - application/json
+      description: Validate a user's access token
+      parameters:
+      - description: Token validation details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.ValidateTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.InfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Validate an access token
+      tags:
+      - Auth
+  /auth/verify-email:
+    post:
+      consumes:
+      - application/json
+      description: Verify a user's email address with a verification code
+      parameters:
+      - description: Verify email details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.VerifyEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.InfoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Verify user email
+      tags:
+      - Auth
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

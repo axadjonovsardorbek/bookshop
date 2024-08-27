@@ -1,0 +1,58 @@
+p, admin, /car/booking/, POST
+p, admin, /car/booking/update, PUT
+p, admin, /car/booking/:id, GET
+p, admin, /car/booking/all, GET
+p, admin, /car/booking/:id, DELETE
+
+p, admin, /car/payment/, POST
+p, admin, /car/payment/:id, GET
+p, admin, /car/payment/:id, DELETE
+
+p, admin, /car/providers/, POST
+p, admin, /car/providers/update, PUT
+p, admin, /car/providers/:id, GET
+p, admin, /car/providers/all, GET
+p, admin, /car/providers/:id, DELETE
+
+p, admin, /car/services/, POST
+p, admin, /car/services/update, PUT
+p, admin, /car/services/:id, GET
+p, admin, /car/services/all, GET
+p, admin, /car/services/:id, DELETE
+
+p, admin, /car/notifications/, POST
+p, admin, /car/notifications/:id, GET
+p, admin, /car/notifications/all, GET
+p, admin, /car/notifications/:id, DELETE
+
+p, user, /car/booking/, POST
+p, user, /car/booking/:id, GET
+p, user, /car/booking/all, GET
+
+p, user, /car/payment/, POST
+p, user, /car/payment/:id, GET
+
+p, user, /car/providers/:id, GET
+p, user, /car/providers/all, GET
+
+p, user, /car/services/:id, GET
+p, user, /car/services/all, GET
+
+p, user, /car/notifications/:id, GET
+p, user, /car/notifications/all, GET
+
+p, provider, /car/booking/:id, GET
+p, provider, /car/booking/all, GET
+
+p, provider, /car/providers/:id, GET
+p, provider, /car/providers/update, PUT
+
+p, provider, /car/services/, POST
+p, provider, /car/services/update, PUT
+p, provider, /car/services/:id, GET
+p, provider, /car/services/all, GET
+
+g, user, owner
+g, user, admin
+
+g, owner, user

@@ -1,0 +1,735 @@
+basePath: /
+definitions:
+  books.AuthorsGetAllRes:
+    properties:
+      authors:
+        items:
+          $ref: '#/definitions/books.AuthorsRes'
+        type: array
+    type: object
+  books.AuthorsGetByIdRes:
+    properties:
+      authors:
+        $ref: '#/definitions/books.AuthorsRes'
+    type: object
+  books.AuthorsRes:
+    properties:
+      biography:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  books.AuthorsUpdateReq:
+    properties:
+      author:
+        $ref: '#/definitions/books.AuthorsRes'
+    type: object
+  books.BooksGetAllRes:
+    properties:
+      books:
+        items:
+          $ref: '#/definitions/books.BooksRes'
+        type: array
+    type: object
+  books.BooksRes:
+    properties:
+      author_id:
+        type: string
+      category_id:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      image_url:
+        type: string
+      language_id:
+        type: string
+      price:
+        type: number
+      provider_id:
+        type: string
+      published_year:
+        type: string
+      publisher_id:
+        type: string
+      stock:
+        type: integer
+      title:
+        type: string
+      total_pages:
+        type: integer
+      translator_id:
+        type: string
+      view_count:
+        type: integer
+      writing_type:
+        type: string
+    type: object
+  books.BooksUpdateReq:
+    properties:
+      book:
+        $ref: '#/definitions/books.BooksRes'
+    type: object
+  books.PublishersGetAllRes:
+    properties:
+      publishers:
+        items:
+          $ref: '#/definitions/books.PublishersRes'
+        type: array
+    type: object
+  books.PublishersRes:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  books.PublishersUpdateReq:
+    properties:
+      publisher:
+        $ref: '#/definitions/books.PublishersRes'
+    type: object
+  books.TranslatorsGetAllRes:
+    properties:
+      translators:
+        items:
+          $ref: '#/definitions/books.TranslatorsRes'
+        type: array
+    type: object
+  books.TranslatorsRes:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      surname:
+        type: string
+    type: object
+  books.TranslatorsUpdateReq:
+    properties:
+      translator:
+        $ref: '#/definitions/books.TranslatorsRes'
+    type: object
+  books.Void:
+    type: object
+info:
+  contact: {}
+  description: API for Book Shop
+  title: Car moyka
+  version: "1.0"
+paths:
+  /authors:
+    get:
+      consumes:
+      - application/json
+      description: Get all authors with optional filtering
+      parameters:
+      - description: Author Name
+        in: query
+        name: name
+        type: string
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.AuthorsGetAllRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all authors
+      tags:
+      - authors
+    post:
+      consumes:
+      - application/json
+      description: Create a new author with the provided details
+      parameters:
+      - description: Author Details
+        in: body
+        name: author
+        required: true
+        schema:
+          $ref: '#/definitions/books.AuthorsRes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.AuthorsRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a new author
+      tags:
+      - authors
+    put:
+      consumes:
+      - application/json
+      description: Update an author's details
+      parameters:
+      - description: Author Update Details
+        in: body
+        name: author
+        required: true
+        schema:
+          $ref: '#/definitions/books.AuthorsUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.AuthorsRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update an author
+      tags:
+      - authors
+  /authors/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an author by ID
+      parameters:
+      - description: Author ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.Void'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete an author
+      tags:
+      - authors
+    get:
+      consumes:
+      - application/json
+      description: Get an author by their ID
+      parameters:
+      - description: Author ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.AuthorsGetByIdRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get author by ID
+      tags:
+      - authors
+  /books:
+    get:
+      consumes:
+      - application/json
+      description: Get all books with optional filtering
+      parameters:
+      - description: Minimum Price
+        in: query
+        name: price_from
+        type: integer
+      - description: Maximum Price
+        in: query
+        name: price_to
+        type: integer
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.BooksGetAllRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all books
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      description: Create a new book with the provided details
+      parameters:
+      - description: Book Details
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/books.BooksRes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.BooksRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a new book
+      tags:
+      - books
+    put:
+      consumes:
+      - application/json
+      description: Update a book's details
+      parameters:
+      - description: Book Update Details
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/books.BooksUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.BooksRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update a book
+      tags:
+      - books
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a book by ID
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.Void'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a book
+      tags:
+      - books
+    get:
+      consumes:
+      - application/json
+      description: Get a book by its ID
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.BooksRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get book by ID
+      tags:
+      - books
+  /publishers:
+    get:
+      consumes:
+      - application/json
+      description: Get all publishers with optional filtering
+      parameters:
+      - description: Publisher Name
+        in: query
+        name: name
+        type: string
+      - description: Publisher Address
+        in: query
+        name: address
+        type: string
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.PublishersGetAllRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all publishers
+      tags:
+      - publishers
+    post:
+      consumes:
+      - application/json
+      description: Create a new publisher with the provided details
+      parameters:
+      - description: Publisher Details
+        in: body
+        name: publisher
+        required: true
+        schema:
+          $ref: '#/definitions/books.PublishersRes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.PublishersRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a new publisher
+      tags:
+      - publishers
+    put:
+      consumes:
+      - application/json
+      description: Update a publisher's details
+      parameters:
+      - description: Publisher Update Details
+        in: body
+        name: publisher
+        required: true
+        schema:
+          $ref: '#/definitions/books.PublishersUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.PublishersRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update a publisher
+      tags:
+      - publishers
+  /publishers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a publisher by ID
+      parameters:
+      - description: Publisher ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.Void'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a publisher
+      tags:
+      - publishers
+    get:
+      consumes:
+      - application/json
+      description: Get a publisher by its ID
+      parameters:
+      - description: Publisher ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.PublishersRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get publisher by ID
+      tags:
+      - publishers
+  /translators:
+    get:
+      consumes:
+      - application/json
+      description: Get all translators with optional filtering
+      parameters:
+      - description: Translator Name
+        in: query
+        name: name
+        type: string
+      - description: Translator Surname
+        in: query
+        name: surname
+        type: string
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.TranslatorsGetAllRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all translators
+      tags:
+      - translators
+    post:
+      consumes:
+      - application/json
+      description: Create a new translator with the provided details
+      parameters:
+      - description: Translator Details
+        in: body
+        name: translator
+        required: true
+        schema:
+          $ref: '#/definitions/books.TranslatorsRes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.TranslatorsRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a new translator
+      tags:
+      - translators
+    put:
+      consumes:
+      - application/json
+      description: Update a translator's details
+      parameters:
+      - description: Translator Update Details
+        in: body
+        name: translator
+        required: true
+        schema:
+          $ref: '#/definitions/books.TranslatorsUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.TranslatorsRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update a translator
+      tags:
+      - translators
+  /translators/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a translator by ID
+      parameters:
+      - description: Translator ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.Void'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a translator
+      tags:
+      - translators
+    get:
+      consumes:
+      - application/json
+      description: Get a translator by its ID
+      parameters:
+      - description: Translator ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/books.TranslatorsRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get translator by ID
+      tags:
+      - translators
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
